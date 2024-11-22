@@ -14,24 +14,15 @@ public class ServicoDeReserva {
         boolean reservaAdicionada = reservas.add(reserva);
 
         if (!reservaAdicionada) {
-            throw new RuntimeException(
-                    String.format("Reserva %s já existe", reserva.getCodigo()));
+            throw new ReservaDuplicadaException(
+                    String.format("A reserva com o código %s já existe", reserva.getCodigo()));
         }
     }
 
     public Optional<Reserva> buscar(String codigo) {
-//        Reserva reservaEncontrada = null;
-
-        for (Reserva reserva : reservas) {
-            if (reserva.getCodigo().equals(codigo)) {
-                return Optional.of(reserva);
-//                reservaEncontrada = reserva;
-//                break;
-            }
-        }
-
-        return Optional.empty();
-//        return Optional.ofNullable(reservaEncontrada);
+        return reservas.stream()
+                .filter(reserva -> reserva.getCodigo().equals(codigo))
+                .findFirst();
     }
 
 }

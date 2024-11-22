@@ -1,25 +1,29 @@
 package br.com.smartweb.airlines;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class ServicoDeBagagem {
 
-    private ServicoDeReserva servicoDeReserva;
+    private final ServicoDeReserva servicoDeReserva;
 
     public ServicoDeBagagem(ServicoDeReserva servicoDeReserva) {
-        Objects.requireNonNull(servicoDeReserva);
-        this.servicoDeReserva = servicoDeReserva;
+        this.servicoDeReserva = Objects.requireNonNull(servicoDeReserva, "O serviço de reservas não pode ser nulo");
     }
 
     public void contratar(String codigoReserva, int quantidadeBagagens) {
         if (quantidadeBagagens <= 0) {
-            throw new IllegalArgumentException("Quantidade de bagagens inválida");
+            throw new IllegalArgumentException("Quantidade de bagagens deve ser maior que zero");
         }
-        // aqui poderia ter outras regras de negócio
 
-        Optional<Reserva> reservaOptional = servicoDeReserva.buscar(codigoReserva);
-        reservaOptional.get().adicionarBagagens(quantidadeBagagens);
+        // Busca a reserva de forma segura
+        Reserva reserva = buscarReservaPorCodigo(codigoReserva);
+        
+        // Adiciona a quantidade de bagagens
+        reserva.adicionarBagagens(quantidadeBagagens);
     }
 
+    private Reserva buscarReservaPorCodigo(String codigoReserva) {
+        return servicoDeReserva.buscar(codigoReserva)
+                .orElseThrow(() -> new ReservaNaoEncontradaException("Reserva com código " + codigoReserva + " não encontrada"));
+    }
 }

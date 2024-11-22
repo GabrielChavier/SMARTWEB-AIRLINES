@@ -7,7 +7,10 @@ public class Passageiro {
     private String nome;
 
     public Passageiro(String nome) {
-        Objects.requireNonNull(nome);
+        Objects.requireNonNull(nome, "O nome não pode ser nulo");
+        if (nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do passageiro não pode estar vazio");
+        }
         this.nome = nome;
     }
 
@@ -16,14 +19,16 @@ public class Passageiro {
     }
 
     public void setNome(String nome) {
+        Objects.requireNonNull(nome, "O nome não pode ser nulo");
+        if (nome.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do passageiro não pode estar vazio");
+        }
         this.nome = nome;
     }
 
     @Override
     public String toString() {
-        return "Passageiro{" +
-                "nome='" + nome + '\'' +
-                '}';
+        return "Passageiro{nome='" + nome + "'}";
     }
 
     @Override
@@ -38,5 +43,5 @@ public class Passageiro {
     public int hashCode() {
         return Objects.hash(nome);
     }
-
 }
+

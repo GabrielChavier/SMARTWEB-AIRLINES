@@ -10,9 +10,17 @@ public class Reserva {
     private int quantidadeBagagens;
 
     public Reserva(String codigo, Voo_old voo, String nomePassageiro) {
-        Objects.requireNonNull(codigo);
-        Objects.requireNonNull(voo);
-        Objects.requireNonNull(nomePassageiro);
+        Objects.requireNonNull(codigo, "O código da reserva não pode ser nulo");
+        Objects.requireNonNull(voo, "O voo não pode ser nulo");
+        Objects.requireNonNull(nomePassageiro, "O nome do passageiro não pode ser nulo");
+
+        if (codigo.trim().isEmpty()) {
+            throw new IllegalArgumentException("O código da reserva não pode estar vazio");
+        }
+        if (nomePassageiro.trim().isEmpty()) {
+            throw new IllegalArgumentException("O nome do passageiro não pode estar vazio");
+        }
+
         this.codigo = codigo;
         this.voo = voo;
         this.passageiro = new Passageiro(nomePassageiro);
@@ -39,14 +47,17 @@ public class Reserva {
     }
 
     public void adicionarBagagens(int quantidade) {
+        if (quantidade < 0) {
+            throw new IllegalArgumentException("A quantidade de bagagens não pode ser negativa");
+        }
         this.quantidadeBagagens += quantidade;
     }
 
     @Override
     public String toString() {
         return "Reserva{" +
-                "codigo=" + codigo +
-                ", voo=" + voo.getCodigo() + "(" + voo.getOrigem() + "-" + voo.getDestino() + ")" +
+                "codigo='" + codigo + '\'' +
+                ", voo=" + voo.getCodigo() + " (" + voo.getOrigem() + "-" + voo.getDestino() + ")" +
                 ", passageiro=" + getNomePassageiro() +
                 ", quantidadeBagagens=" + quantidadeBagagens +
                 '}';

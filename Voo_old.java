@@ -1,14 +1,16 @@
 package br.com.smartweb.airlines;
 
-public class Voo_old {
+import java.util.Objects;
+
+public class Voo {
     private final String codigo;
     private final String origem;
     private final String destino;
 
-    public Voo_old(String codigo, String origem, String destino) {
-        this.codigo = codigo;
-        this.origem = origem;
-        this.destino = destino;
+    public Voo(String codigo, String origem, String destino) {
+        this.codigo = Objects.requireNonNull(codigo, "O código não pode ser nulo");
+        this.origem = Objects.requireNonNull(origem, "A origem não pode ser nula");
+        this.destino = Objects.requireNonNull(destino, "O destino não pode ser nulo");
     }
 
     public String getCodigo() {
@@ -25,11 +27,7 @@ public class Voo_old {
 
     @Override
     public String toString() {
-        return "Voo{" +
-                "codigo='" + codigo + '\'' +
-                ", origem='" + origem + '\'' +
-                ", destino='" + destino + '\'' +
-                '}';
+        return String.format("Voo {codigo='%s', origem='%s', destino='%s'}", codigo, origem, destino);
     }
 
     @Override
@@ -37,7 +35,7 @@ public class Voo_old {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Voo_old voo = (Voo_old) o;
+        Voo voo = (Voo) o;
 
         if (!codigo.equals(voo.codigo)) return false;
         if (!origem.equals(voo.origem)) return false;
@@ -52,4 +50,3 @@ public class Voo_old {
         return result;
     }
 }
-
